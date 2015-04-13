@@ -5,28 +5,32 @@ Created on Thu Apr 09 08:30:18 2015
 @author: Raandrew
 """
 import tellurium as te
-import numpy
 import math
 
+def simulate(antModelStr, constants):
+    rr = te.loada(antModelStr.format(**constants))
+    rr.simulate(0, 80, 100)
+    rr.plot()
+    print "P =", rr.P
+    
 
 kinittxn = 0.12;
-kpol = 25;
-ORF = 678;
-kinittrans = 2;
-ktrans = 21;
+kpol = 25.0;
+ORF = 678.0;
+kinittrans = 2.0;
+ktrans = 21.0;
 kobsminus = 0;
 kobsplus = 0;
 kfold = 0;
-RNAthalf = (1.2 * 60);
-Proteinthalf = (72 * 60 * 60);
-d1 = 98;
-d2 = 500;
+RNAthalf = (1.2 / 60);
+Proteinthalf = (72.0 / (60 * 60));
+d = 250;
 
-k1 = 3;
-k2 = (math.log(2) / (0.5 * (d1 / kpol)));
-k3 = (math.log(2) / (0.5 * (d2 / kpol)));
+k1 = 0.12;
+k2 = (math.log(2) / (0.5 * (d / kpol)));
+k3 = (math.log(2) / (0.5 * (d / kpol)));
 k4 = (math.log(2) / 0.5);
-k5 = (math.log(2) / (0.5 * (d2 / ktrans)));
+k5 = (math.log(2) / (0.5 * (d / ktrans)));
 k6 = (kfold);
 k7 = (kobsminus);
 k8 = (kobsplus);
@@ -34,9 +38,11 @@ k9 = (math.log(2) / RNAthalf);
 k10 = (0.1745  * k9);
 k11 = (math.log(2) / Proteinthalf);
 
-print k2, k3, k4, k5, k6, k7, k8, k9
+constants = {'k1': str(k1), 'k2': str(k2), 'k3': str(k3), 'k4': str(k4), 
+'k5': str(k5), 'k6': str(k6), 'k7': str(k7), 'k8': str(k8), 'k9': str(k9),
+'k10': str(k10), 'k11': str(k11)}
 
-rr = te.loada("""
+antModel = """
     
     $I0 -> I; k1;
     I -> Uppp; k2*I;
@@ -66,7 +72,7 @@ rr = te.loada("""
     ROH -> $Void; k10*ROH;
     P -> $Void; k11*P;
 
-    I = 2;
+    I = 0;
     Uppp = 0;
     Upppf = 0;
     Rppp = 0;
@@ -75,23 +81,9 @@ rr = te.loada("""
     ROH = 0;
     P = 0;
     
-    I0 = 10;
-    Void = 0;
-
     k1 = {k1}; k2 = {k2}; k3 = {k3}; k4 = {k4}; k5 = {k5};
     k6 = {k6}; k7 = {k7}; k8 = {k8}; k9 = {k9}; k10 = {k10};
-    k11 = {k11}""".format(k1 = str(k1), k2 = str(k2), k3 = str(k3), k4 = str(k4), k5 = str(k5),
-         k6 = str(k6), k7 = str(k7), k8 = str(k8), k9 = str(k9), k10 = str(k10),
-         k11 = str(k11)))
+    k11 = {k11}"""
 
+simulate(antModel, constants)
 
-#t4 had + ' / time'
-
-m1 = rr.simulate(0,5000000,50000);
-
-te.plotArray(m1)
-
-
-#rr.getSteadyStateValues()
-
-#print "P =", rr.model.P

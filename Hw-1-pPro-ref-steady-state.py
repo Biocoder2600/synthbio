@@ -29,7 +29,7 @@ d = 250;
 k1 = 0.12;
 k2 = (math.log(2) / (0.5 * (d / kpol)));
 k3 = (math.log(2) / (0.5 * (d / kpol)));
-k4 = (math.log(2) / 0.5);
+k4 = (math.log(2) / (0.5));
 k5 = (math.log(2) / (0.5 * (d / ktrans)));
 k6 = (kfold);
 k7 = (kobsminus);
@@ -44,33 +44,33 @@ constants = {'k1': str(k1), 'k2': str(k2), 'k3': str(k3), 'k4': str(k4),
 
 antModel = """
     
-    $I0 -> I; k1;
-    I -> Uppp; k2*I;
-    Uppp -> Rppp; k3*Upp;
-    UOH -> ROH; k3*UOH;
-    Upppf ->Rpppf; k3*Upppf;
-    Uppp -> Uppp + T; k4*Uppp;
-    Upppf -> Upppf + T; k4*Upppf;
-    UOH -> UOH + T; k4*UOH;
-    Rppp -> Rppp + T; k4*Rppp;
-    Rpppf -> Rpppf + T; k4*Rpppf;
-    ROH -> ROH + T; k4*ROH;
-    T -> P; k5*T; 
+    -> I; k1
+    I -> Uppp; k2 * I
+    Uppp -> Rppp; k3 * Uppp
+    UOH -> ROH; k3 * UOH
+    Upppf ->Rpppf; k3 * Upppf
+    Uppp -> Uppp + T; k4 * Uppp
+    Upppf -> Upppf + T; k4 * Upppf
+    UOH -> UOH + T; k4 * UOH
+    Rppp -> Rppp + T; k4 * Rppp
+    Rpppf -> Rpppf + T; k4 * Rpppf
+    ROH -> ROH + T; k4 * ROH
+    T -> P; k5 * T
     
-    Uppp -> Upppf; k6*Uppp;
-    Upppf -> UOH; k7*Upppf;
-    Upppf -> UOH; k8*Upppf;
-    Rppp -> Rpppf; k6*Rppp;
-    Rpppf -> ROH; k7*Rpppf;
-    Rpppf -> ROH; k8*Rpppf;
+    Uppp -> Upppf; k6 * Uppp
+    Upppf -> UOH; k7 * Upppf
+    Upppf -> UOH; k8 * Upppf
+    Rppp -> Rpppf; k6 * Rppp
+    Rpppf -> ROH; k7 * Rpppf
+    Rpppf -> ROH; k8 * Rpppf
     
-    Uppp -> $Void; k9*Uppp;
-    Upppf -> $Void; k9*Upppf;
-    Rppp -> $Void; k9*Upppf;
-    Rpppf -> $Void; k9*Rpppf;
-    UOH -> $Void; k10*UOH;
-    ROH -> $Void; k10*ROH;
-    P -> $Void; k11*P;
+    Uppp -> ; k9 * Uppp
+    Upppf -> ; k9 * Upppf
+    Rppp -> ; k9 * Rppp
+    Rpppf -> ; k9 * Rpppf
+    UOH -> ; k10 * UOH
+    ROH -> ; k10 * ROH
+    P -> ; k11 * P
 
     I = 0;
     Uppp = 0;

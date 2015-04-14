@@ -11,6 +11,8 @@ import math
 # returns the steady state value of the protein
 def simulate(antModelStr, constants):
     rr = te.loada(antModelStr.format(**constants))
+    rr.simulate(0, 800000, 1000)
+    rr.plot()
     rr.getSteadyStateValues()
     return rr.P
     

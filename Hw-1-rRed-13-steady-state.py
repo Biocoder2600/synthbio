@@ -1,54 +1,53 @@
 # -*- coding: utf-8 -*-
 """
-Created on Thu Apr 09 08:30:18 2015
+Created on Mon Apr 13 21:46:42 2015
 
-@author: Raandrew
+@author: mmurthy2
 """
+
 import tellurium as te
 import math
 
 def simulate(antModelStr, constants):
     rr = te.loada(antModelStr.format(**constants))
-    rr.simulate(0, 800000, 100)
+    rr.simulate(0, 800, 100)
     rr.plot()
     print "P =", rr.P
     
-
 kinittxn = 0.12
-kpol = 25.0
-ORF = 678.0
-kinittrans = 2.0
-ktrans = 21.0
-kobsminus = 0 / 60
+kpol = 25
+ORF = 678
+kinittrans = 2
+ktrans = 21
+kfold = 0.052
+kobsminus = 3.64 / 60
 kobsplus = 0 / 60
-kfold = 0;
-RNAthalf = (1.2 * 60)
-Proteinthalf = (72.0 * (60 * 60))
-d = 250
+RNAthalf = 1.2 * 60
+Proteinthalf = 72 * (60 * 60)
+d = 380
 
-k1 = 0.12
-k2 = (math.log(2) / (0.5 * (d / kpol)))
-k3 = (math.log(2) / (0.5 * (d / kpol)))
-k4 = (math.log(2) / (0.5 * 1200))
-k5 = (math.log(2) / (0.5 * (d / ktrans)))
-k6 = (kfold)
-k7 = (kobsminus)
-k8 = (kobsplus)
-k9 = (math.log(2) / RNAthalf)
-k10 = (0.1745  * k9)
-k11 = (math.log(2) / Proteinthalf)
+k1 = kinittxn
+k2 = math.log(2) / (0.5 * (d / kpol))
+k3 = math.log(2) / (0.5 * (d / kpol))
+k4 = 0.4
+k5 = math.log(2) / (0.5 * (d / ktrans))
+k6 = kfold
+k7 = kobsminus
+k8 = kobsplus
+k9 = math.log(2) / RNAthalf
+k10 = 0.1745 * k9
+k11 = math.log(2) / Proteinthalf
 
 constants = {'k1': str(k1), 'k2': str(k2), 'k3': str(k3), 'k4': str(k4), 
 'k5': str(k5), 'k6': str(k6), 'k7': str(k7), 'k8': str(k8), 'k9': str(k9),
 'k10': str(k10), 'k11': str(k11)}
 
 antModel = """
-    
     -> I; k1
     I -> Uppp; k2 * I
     Uppp -> Rppp; k3 * Uppp
     UOH -> ROH; k3 * UOH
-    Upppf ->Rpppf; k3 * Upppf
+    Upppf -> Rpppf; k3 * Upppf
     Uppp -> Uppp + T; k4 * Uppp
     Upppf -> Upppf + T; k4 * Upppf
     UOH -> UOH + T; k4 * UOH
@@ -71,7 +70,7 @@ antModel = """
     UOH -> ; k10 * UOH
     ROH -> ; k10 * ROH
     P -> ; k11 * P
-
+    
     I = 0;
     Uppp = 0;
     Upppf = 0;
@@ -86,4 +85,3 @@ antModel = """
     k11 = {k11}"""
 
 simulate(antModel, constants)
-

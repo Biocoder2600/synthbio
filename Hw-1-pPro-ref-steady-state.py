@@ -9,34 +9,34 @@ import math
 
 def simulate(antModelStr, constants):
     rr = te.loada(antModelStr.format(**constants))
-    rr.simulate(0, 80, 100)
+    rr.simulate(0, 800000, 100)
     rr.plot()
     print "P =", rr.P
     
 
-kinittxn = 0.12;
-kpol = 25.0;
-ORF = 678.0;
-kinittrans = 2.0;
-ktrans = 21.0;
-kobsminus = 0;
-kobsplus = 0;
+kinittxn = 0.12
+kpol = 25.0
+ORF = 678.0
+kinittrans = 2.0
+ktrans = 21.0
+kobsminus = 0 / 60
+kobsplus = 0 / 60
 kfold = 0;
-RNAthalf = (1.2 / 60);
-Proteinthalf = (72.0 / (60 * 60));
+RNAthalf = (1.2 * 60)
+Proteinthalf = (72.0 * (60 * 60))
 d = 250;
 
-k1 = 0.12;
-k2 = (math.log(2) / (0.5 * (d / kpol)));
-k3 = (math.log(2) / (0.5 * (d / kpol)));
-k4 = (math.log(2) / (0.5));
-k5 = (math.log(2) / (0.5 * (d / ktrans)));
-k6 = (kfold);
-k7 = (kobsminus);
-k8 = (kobsplus);
-k9 = (math.log(2) / RNAthalf);
-k10 = (0.1745  * k9);
-k11 = (math.log(2) / Proteinthalf);
+k1 = 0.12
+k2 = (math.log(2) / (0.5 * (d / kpol)))
+k3 = (math.log(2) / (0.5 * (d / kpol)))
+k4 = (math.log(2) / (0.5 * 1200))
+k5 = (math.log(2) / (0.5 * (d / ktrans)))
+k6 = (kfold)
+k7 = (kobsminus)
+k8 = (kobsplus)
+k9 = (math.log(2) / RNAthalf)
+k10 = (0.1745  * k9)
+k11 = (math.log(2) / Proteinthalf)
 
 constants = {'k1': str(k1), 'k2': str(k2), 'k3': str(k3), 'k4': str(k4), 
 'k5': str(k5), 'k6': str(k6), 'k7': str(k7), 'k8': str(k8), 'k9': str(k9),

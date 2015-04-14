@@ -13,7 +13,7 @@ def simulate(antModelStr, constants):
     rr.simulate(0, 800, 100)
     rr.plot()
     print "P =", rr.P
-    
+
 
 kinittxn = 0.12
 kpol = 25
@@ -21,8 +21,8 @@ ORF = 678
 kinittrans = 2
 ktrans = 21
 kfold = 0.052
-kobsminus = 3.64 / 60
-kobsplus = 0 / 60
+kobsminus = 3.64 * 60
+kobsplus = 0 * 60
 RNAthalf = 1.2 * 60
 Proteinthalf = 72 * (60 * 60)
 d = 380
@@ -30,7 +30,7 @@ d = 380
 k1 = kinittxn
 k2 = math.log(2) / (0.5 * (d / kpol))
 k3 = math.log(2) / (0.5 * (d / kpol))
-k4 = 0.4
+k4 = (math.log(2) / (0.5 * 1/kinittxn))
 k5 = math.log(2) / (0.5 * (d / ktrans))
 k6 = kfold
 k7 = kobsminus

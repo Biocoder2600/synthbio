@@ -14,7 +14,8 @@ def simulate(antModelStr, constants):
     rr.plot()
     print "P =", rr.P
     
-kinittxn = 0.12
+t = 0.001
+kinittxn = 1/t
 kpol = 25
 ORF = 678
 kinittrans = 2

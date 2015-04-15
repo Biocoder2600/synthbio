@@ -124,9 +124,11 @@ antModel = """
 
 # run simulations for the pPro-ref device and rRed13 device
 P_ref = simulate(antModel, constants_ref)
-print "P_ref =", P_ref
+print "The above plot does not go to steady state because Tellurium cannot plot any more points."
+print "At steady state, P_ref =", P_ref
 P_rRed13 = simulate(antModel, constants_rRed13)
-print "P_rRed13 =", P_rRed13
+print "The above plot does not go to steady state because Tellurium cannot plot any more points."
+print "At steady state, P_rRed13 =", P_rRed13
 print "gamma_rel =", (P_rRed13 / P_ref)
 
 

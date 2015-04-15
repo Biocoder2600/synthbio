@@ -22,25 +22,25 @@ kpol = 25.0
 ORF = 678.0
 kinittrans = 2.0
 ktrans = 21.0
+kfold = 0.0
 kobsminus = 0.0 / 60
 kobsplus = 0.0 / 60
-kfold = 0.0;
-RNAthalf = (1.2 * 60)
-Proteinthalf = (72.0 * (60 * 60))
+RNAthalf = 1.2 * 60
+Proteinthalf = 72.0 * 3600
 d = 275.0
 
 # constants for the pPro-ref model
 k1 = kinittxn
-k2 = (math.log(2) / (0.5 * (d / kpol)))
-k3 = (math.log(2) / (0.5 * (ORF / kpol)))
+k2 = math.log(2) / (0.5 * (d / kpol))
+k3 = math.log(2) / (0.5 * (ORF / kpol))
 k4 = 2.0
-k5 = (math.log(2) / (0.5 * (ORF / ktrans)))
-k6 = (kfold)
-k7 = (kobsminus)
-k8 = (kobsplus)
-k9 = (math.log(2) / RNAthalf)
-k10 = (0.1745  * k9)
-k11 = (math.log(2) / Proteinthalf)
+k5 = math.log(2) / (0.5 * (ORF / ktrans))
+k6 = kfold
+k7 = kobsminus
+k8 = kobsplus
+k9 = math.log(2) / RNAthalf
+k10 = 0.1745  * k9
+k11 = math.log(2) / Proteinthalf
 
 # dictionary of constants for pPro-ref model
 constants_ref = {'k1': str(k1), 'k2': str(k2), 'k3': str(k3), 'k4': str(k4), 

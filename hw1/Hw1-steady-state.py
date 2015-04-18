@@ -2,7 +2,7 @@
 """
 Created on Thu Apr 09 08:30:18 2015
 
-@author: Raandrew
+@author: Andrew Raappana, Madhav Murthy, Quanhui Liu 
 """
 import tellurium as te
 import math

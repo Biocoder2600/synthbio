@@ -61,8 +61,6 @@ antModel = """
 # same as reference model
 ORF = 678
 d = 275
-RNAthalf = 1.2 * 60
-Proteinthalf = 72.0 * 3600
 L = (0.0001, 1)
 
 result = []
@@ -74,6 +72,8 @@ for i in range(0, 100):
     kfold = random.uniform(0.0001, 3)
     kobsminus = random.uniform(0.001 / 60, 10 / 60)
     kobsplus = random.uniform(0.001 / 60, 10 / 60)
+    RNAthalf = random.uniform(15.0, 24.0 * 3600)
+    Proteinthalf = random.uniform(60.0, 72.0 * 3600)
     EC = random.uniform(0.0003, 0.1)
     
     if (kobsplus > kobsminus):
@@ -111,7 +111,7 @@ for i in range(0, 100):
         
         gamma_rel = (P_aRED / P_ref)
         print "gamma_rel = ", gamma_rel
-        
+            
         if (gamma_rel > 1.00):
             result.append((kinittxn, kpol, ktrans, kfold, kobsminus, kobsplus, EC, gamma_rel))
 

@@ -58,13 +58,12 @@ antModel = """
     k6 = {k6}; k7 = {k7}; k8 = {k8}; k9 = {k9}; k10 = {k10};
     k11 = {k11}"""
     
-# reference protein value
-P_ref = 9322401.71306
-    
+# same as reference model
 ORF = 678
 d = 275
 RNAthalf = 1.2 * 60
 Proteinthalf = 72.0 * 3600
+L = (0.000001, 1)
 
 result = []
 
@@ -75,8 +74,7 @@ for i in range(0, 100):
     kfold = random.uniform(0.0001, 3)
     kobsminus = random.uniform(0.001 / 60, 10 / 60)
     kobsplus = random.uniform(0.001 / 60, 10 / 60)
-    EC = random.uniform(0.000000001, 1)
-    L = random.uniform(0.0000001, 1)
+    EC = random.uniform(0.0000001, 1)
     
     if (kobsplus > kobsminus):
         # constants for the pPro-ref model
@@ -87,27 +85,39 @@ for i in range(0, 100):
         k5 = math.log(2) / (0.5 * (ORF / ktrans))
         k6 = kfold
         k7 = 0
-        k8 = (kobsplus - kobsminus) * (1 / (1 + (EC/L))) + kobsminus
+        k8 = (kobsplus - kobsminus) * (1 / (1 + (EC/L[0]))) + kobsminus
         k9 = math.log(2) / RNAthalf
         k10 = 0.1745  * k9
         k11 = math.log(2) / Proteinthalf
         
-        # dictionary of constants for pPro-ref model
-        constants = {'k1': str(k1), 'k2': str(k2), 'k3': str(k3), 'k4': str(k4), 
+        # dictionary of constants for ref model
+        constants_ref = {'k1': str(k1), 'k2': str(k2), 'k3': str(k3), 'k4': str(k4), 
         'k5': str(k5), 'k6': str(k6), 'k7': str(k7), 'k8': str(k8), 'k9': str(k9),
         'k10': str(k10), 'k11': str(k11)}
 
-        P_aRED = simulate(antModel, constants)
-        gamma_rel = (P_aRED / P_ref)
+        # compute outputs for sampled parameter sets when FAEE production is zero.
+        P_ref = simulate(antModel, constants_ref)
+        print "At steady state, P_ref = ", P_ref
+        
+        k8 = (kobsplus - kobsminus) * (1 / (1 + (EC/L[1]))) + kobsminus
+        
+        constants_aRED = {'k1': str(k1), 'k2': str(k2), 'k3': str(k3), 'k4': str(k4), 
+        'k5': str(k5), 'k6': str(k6), 'k7': str(k7), 'k8': str(k8), 'k9': str(k9),
+        'k10': str(k10), 'k11': str(k11)}
+        
+        # compute outputs for the same sampled parameter sets when FAEE production is maximal.
+        P_aRED = simulate(antModel, constants_aRED)
         print "At steady state, P_aRED = ", P_aRED
+        
+        gamma_rel = (P_aRED / P_ref)
         print "gamma_rel = ", gamma_rel
         
-        if (gamma_rel > 3.00):
-            result.append((kinittxn, kpol, ktrans, kfold, kobsminus, kobsplus, EC, L, gamma_rel))
+        if (gamma_rel > 1.00):
+            result.append((kinittxn, kpol, ktrans, kfold, kobsminus, kobsplus, EC, gamma_rel))
 
 with open('result.csv', 'w') as out:
     csv_out = csv.writer(out)
-    csv_out.writerow(('kinittxn', 'kpol', 'ktrans', 'kfold', 'kobsminus', 'kobsplus', 'EC', 'L', 'gamma_rel'))
+    csv_out.writerow(('kinittxn', 'kpol', 'ktrans', 'kfold', 'kobsminus', 'kobsplus', 'EC', 'gamma_rel'))
     for row in result:
         csv_out.writerow(row)
 

@@ -2,7 +2,7 @@
 """
 Created on Sat Apr 18 18:29:33 2015
 
-@author: mmurthy2
+@author: Andrew Raappana, Madhav Murthy, Quanhui Liu, Justin Jenkins
 """
 
 import tellurium as te
@@ -10,6 +10,7 @@ import math
 import random
 import csv
 
+# returns the steady state value of RFP
 def simulate(antModel, constants):
     rr = te.loada(antModel.format(**constants))
     rr.getSteadyStateValues()
@@ -58,14 +59,19 @@ antModel = """
     k6 = {k6}; k7 = {k7}; k8 = {k8}; k9 = {k9}; k10 = {k10};
     k11 = {k11}"""
     
-# same as reference model
+# ORF = 678, d = 275 in Carothers et.al. Using the same values here
 ORF = 678
 d = 275
+
+# Low L (FAEE) value and max L (FAEE) value
 L = (0.0001, 1)
 
+# result vector to keep all inputs, output for gamma_rel > 1.00
 result = []
 
-for i in range(0, 100):
+# Do global sensitivity analysis by running model with 1000 parameter sets
+for i in range(0, 1000):
+    # perform uniform sampling of parameters
     kinittxn = random.uniform(0.0001, 1)
     kpol = random.uniform(25, 230)
     ktrans = random.uniform(21, 63)
@@ -77,7 +83,6 @@ for i in range(0, 100):
     EC = random.uniform(0.0003, 0.1)
     
     if (kobsplus > kobsminus):
-        # constants for the pPro-ref model
         k1 = kinittxn
         k2 = math.log(2) / (0.5 * (d / kpol))
         k3 = math.log(2) / (0.5 * (ORF / kpol))
@@ -95,29 +100,31 @@ for i in range(0, 100):
         'k5': str(k5), 'k6': str(k6), 'k7': str(k7), 'k8': str(k8), 'k9': str(k9),
         'k10': str(k10), 'k11': str(k11)}
 
-        # compute outputs for sampled parameter sets when FAEE production is zero.
+        # compute outputs for sampled parameter sets when FAEE production is low.
         P_ref = simulate(antModel, constants_ref)
-        print "At steady state, P_ref = ", P_ref
+        # print "At steady state, P_ref = ", P_ref
         
         k8 = (kobsplus - kobsminus) * (1 / (1 + (EC/L[1]))) + kobsminus
         
+        # dictionary of constants for aRED model
         constants_aRED = {'k1': str(k1), 'k2': str(k2), 'k3': str(k3), 'k4': str(k4), 
         'k5': str(k5), 'k6': str(k6), 'k7': str(k7), 'k8': str(k8), 'k9': str(k9),
         'k10': str(k10), 'k11': str(k11)}
         
         # compute outputs for the same sampled parameter sets when FAEE production is maximal.
         P_aRED = simulate(antModel, constants_aRED)
-        print "At steady state, P_aRED = ", P_aRED
+        # print "At steady state, P_aRED = ", P_aRED
         
         gamma_rel = (P_aRED / P_ref)
-        print "gamma_rel = ", gamma_rel
+        # print "gamma_rel = ", gamma_rel
             
         if (gamma_rel > 1.00):
-            result.append((kinittxn, kpol, ktrans, kfold, kobsminus, kobsplus, EC, gamma_rel))
+            result.append((kinittxn, kpol, ktrans, kfold, kobsminus, kobsplus, RNAthalf, Proteinthalf, EC, gamma_rel))
 
+# put results into csv file
 with open('result.csv', 'w') as out:
     csv_out = csv.writer(out)
-    csv_out.writerow(('kinittxn', 'kpol', 'ktrans', 'kfold', 'kobsminus', 'kobsplus', 'EC', 'gamma_rel'))
+    csv_out.writerow(('kinittxn', 'kpol', 'ktrans', 'kfold', 'kobsminus', 'kobsplus', 'RNAthalf', 'Proteinthalf', 'EC', 'gamma_rel'))
     for row in result:
         csv_out.writerow(row)
 

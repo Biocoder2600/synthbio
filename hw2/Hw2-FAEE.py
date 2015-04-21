@@ -63,7 +63,7 @@ ORF = 678
 d = 275
 RNAthalf = 1.2 * 60
 Proteinthalf = 72.0 * 3600
-L = (0.000001, 1)
+L = (0.0001, 1)
 
 result = []
 
@@ -74,7 +74,7 @@ for i in range(0, 100):
     kfold = random.uniform(0.0001, 3)
     kobsminus = random.uniform(0.001 / 60, 10 / 60)
     kobsplus = random.uniform(0.001 / 60, 10 / 60)
-    EC = random.uniform(0.0000001, 1)
+    EC = random.uniform(0.0003, 0.1)
     
     if (kobsplus > kobsminus):
         # constants for the pPro-ref model

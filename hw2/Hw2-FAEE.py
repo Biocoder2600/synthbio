@@ -64,7 +64,7 @@ ORF = 678
 d = 275
 
 # Low L (FAEE) value and max L (FAEE) value
-L = (0.0001, 1)
+L = (0.0000000000000001, 1)
 
 # result vector to keep all inputs, output for gamma_rel > 1.00
 result = []
@@ -80,7 +80,7 @@ for i in range(0, 1000):
     kobsplus = random.uniform(0.001 / 60, 10 / 60)
     RNAthalf = random.uniform(15.0, 24.0 * 3600)
     Proteinthalf = random.uniform(60.0, 72.0 * 3600)
-    EC = random.uniform(0.0003, 0.1)
+    EC = random.uniform(0.0000000000000001, 1)
     
     if (kobsplus > kobsminus):
         k1 = kinittxn

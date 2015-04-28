@@ -133,12 +133,12 @@ baseoptcoef = [0.161934555, 213.54424, 51.17770, 1.954204876, 8.480704e-08,
 
 # print 'Base opt coeffs', baseoptcoef
 
-for i in range(5, 9):
+for i in range(0, 9):
     uncert = np.zeros(9)
     # get uncertainty range
     for j in range(0, len(baseoptcoef)):
         if (i == j):
-            uncert[j] = baseoptcoef[j] * 0.50
+            uncert[j] = baseoptcoef[j] * 0.10
         else:
             uncert[j] = baseoptcoef[j] * 0.10
     
@@ -168,7 +168,7 @@ for i in range(5, 9):
     print 'top = ', top
     print 'bottom = ', bottom
     
-    filename = 'result' + str(i) + '.csv'
+    filename = 'result-control' + str(i) + '.csv'
     
     # print 'filename', filename
     

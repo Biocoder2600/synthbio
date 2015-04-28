@@ -133,7 +133,7 @@ baseoptcoef = [0.161934555, 213.54424, 51.17770, 1.954204876, 8.480704e-08,
 
 # print 'Base opt coeffs', baseoptcoef
 
-for i in range(0, 9):
+for i in range(5, 9):
     uncert = np.zeros(9)
     # get uncertainty range
     for j in range(0, len(baseoptcoef)):
@@ -147,7 +147,7 @@ for i in range(0, 9):
     # run the simulation x times and collect the results in result
     # use x = 50 for testing and x = 1000 for data collection
     result = []
-    for k in range(0, 50):
+    for k in range(0, 1000):
         params = np.zeros(9)
         for l in range(0, len(baseoptcoef)):
             params[l] = random.uniform(baseoptcoef[l] - uncert[l], baseoptcoef[l] + uncert[l])
@@ -167,7 +167,6 @@ for i in range(0, 9):
     
     print 'top = ', top
     print 'bottom = ', bottom
-    print 'Result = ', np_result
     
     filename = 'result' + str(i) + '.csv'
     
@@ -181,5 +180,4 @@ for i in range(0, 9):
         csv_out = csv.writer(out)
         csv_out.writerow(('kinittxn', 'kpol', 'ktrans', 'kfold', 'kobsminus', 'kobsplus', 'RNAthalf', 'Proteinthalf', 'EC', 'gamma_rel'))
         for row in result:
-            print row
             csv_out.writerow(tuple(row))

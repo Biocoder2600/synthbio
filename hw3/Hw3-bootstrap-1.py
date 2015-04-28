@@ -2,7 +2,21 @@
 """
 Created on Tue Apr 28 09:09:32 2015
 
-@author: mmurthy2
+@author: Andrew Raappana, Madhav Murthy, Quanhui Liu, Justin Jenkins
+
+Approach:
+Using the data collected from the previous homework we obtained the optimal
+parameter set and used that as a starting point for our bootstrapping algorithm.
+
+We repeated the bootstrapping algorithm 9 times for the 9 design variables
+we varied in the global sensitivity analysis. For each of the 9 runs, we assign
+the nth parameter with 50% uncertainity and the rest of the parameters with 10%
+uncertainity. 
+
+We now run a global sensitivity analysis on the new ranges and collect
+the results. From the results collected we remove the top 2.5% and bottom
+2.5% of gamma_rel values to give us a 95% conf interval. We plot the filtered 
+results to determine which design variables are most significant.
 """
 
 import tellurium as te
@@ -117,7 +131,7 @@ def reactionModel(coefficients, result):
 baseoptcoef = [0.161934555, 213.54424, 51.17770, 1.954204876, 8.480704e-08, 
                1.572963e-05, 57976.99421,  127708.1747, 0.3464432996]
 
-print 'Base opt coeffs', baseoptcoef
+# print 'Base opt coeffs', baseoptcoef
 
 for i in range(0, 9):
     uncert = np.zeros(9)
@@ -128,8 +142,10 @@ for i in range(0, 9):
         else:
             uncert[j] = baseoptcoef[j] * 0.10
     
-    print 'Uncertainty', uncert
+    # print 'Uncertainty', uncert
     
+    # run the simulation x times and collect the results in result
+    # use x = 50 for testing and x = 1000 for data collection
     result = []
     for k in range(0, 50):
         params = np.zeros(9)
@@ -140,7 +156,7 @@ for i in range(0, 9):
 
     np_result = np.array(result)
     
-    print 'Result size', np.shape(np_result)
+    # print 'Result size', np.shape(np_result)
     
     # find the top and bottom 2.5% gamma rel, remove them
     top = np.percentile(np_result[:, 9], 97.5)
@@ -149,16 +165,18 @@ for i in range(0, 9):
     np_result = np_result[np_result[:, 9] < top]
     np_result = np_result[np_result[:, 9] > bottom]
     
-    print 'top', top
-    print 'bottom', bottom
-    print 'Result', np_result
+    print 'top = ', top
+    print 'bottom = ', bottom
+    print 'Result = ', np_result
     
-    filename = 'results/result' + str(i) + '.csv'
+    filename = 'result' + str(i) + '.csv'
     
-    print 'filename', filename
+    # print 'filename', filename
     
     result = list(np_result)
     
+    # write the results to file; result0.csv corresponds to when kinittxn is varied 50%,
+    # result1.csv corresponds to when kpol is varied 50% and so on.
     with open(filename, 'w') as out:
         csv_out = csv.writer(out)
         csv_out.writerow(('kinittxn', 'kpol', 'ktrans', 'kfold', 'kobsminus', 'kobsplus', 'RNAthalf', 'Proteinthalf', 'EC', 'gamma_rel'))

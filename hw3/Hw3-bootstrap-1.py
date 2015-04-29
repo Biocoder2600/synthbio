@@ -8,6 +8,7 @@ Approach:
 Using the data collected from the previous homework we obtained the optimal
 parameter set and used that as a starting point for our bootstrapping algorithm.
 
+We first created a control result by varying all the parameters by 10%. 
 We repeated the bootstrapping algorithm 9 times for the 9 design variables
 we varied in the global sensitivity analysis. For each of the 9 runs, we assign
 the nth parameter with 50% uncertainity and the rest of the parameters with 10%
@@ -138,7 +139,7 @@ for i in range(0, 9):
     # get uncertainty range
     for j in range(0, len(baseoptcoef)):
         if (i == j):
-            uncert[j] = baseoptcoef[j] * 0.10
+            uncert[j] = baseoptcoef[j] * 0.50
         else:
             uncert[j] = baseoptcoef[j] * 0.10
     
@@ -168,7 +169,7 @@ for i in range(0, 9):
     print 'top = ', top
     print 'bottom = ', bottom
     
-    filename = 'result-control' + str(i) + '.csv'
+    filename = 'result' + str(i) + '.csv'
     
     # print 'filename', filename
     

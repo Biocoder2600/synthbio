@@ -55,15 +55,31 @@ for i in range(0, 10):
     Km9 = random.uniform(0.0001, 0.01)
     Km10 = random.uniform(0.0001, 0.01)
     Km11 = random.uniform(0.0001, 0.01)
-    inter = random.uniform(0.0, 1.0)
+    inter = 0.0
     S1 = 10.0    
     
+    constants_ref = {'k1': str(k1), 'k2': str(k2), 'k3': str(k3), 'k4': str(k4), 
+        'k5': str(k5), 'k6': str(k6), 'k7': str(k7), 'k9': str(k9),
+        'k10': str(k10), 'k11': str(k11), 'k12': str(k12), 'Km9' : str(Km9), 
+        'Km10': str(Km10), 'Km11': str(Km11), 'inter': str(inter), 'k8': str(k8),
+        'S1': str(S1)}
+        
+    rr = te.loada(model.format(**constants))
+    rr.getSteadyStateValues()
+    S4_ref = rr.S4
+    print 'S4_ref =', S4_ref
+        
+    inter = random.uniform(0.0000000001, 1.0)
     constants = {'k1': str(k1), 'k2': str(k2), 'k3': str(k3), 'k4': str(k4), 
         'k5': str(k5), 'k6': str(k6), 'k7': str(k7), 'k9': str(k9),
         'k10': str(k10), 'k11': str(k11), 'k12': str(k12), 'Km9' : str(Km9), 
         'Km10': str(Km10), 'Km11': str(Km11), 'inter': str(inter), 'k8': str(k8),
         'S1': str(S1)}
     
+    
     rr = te.loada(model.format(**constants))
     rr.getSteadyStateValues()
-    print 'S4 =', rr.S4
+    S4 = rr.S4
+    print 'S4 =', S4
+    
+    print 'gamma_rel =', (S4 / S4_ref)
